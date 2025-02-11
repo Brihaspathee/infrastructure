@@ -1,0 +1,17 @@
+services:
+  keycloak:
+    image: keycloak/keycloak  # latest keycloak version
+    container_name: keycloak
+    ports:
+      - "3081:8080"       # Keycloak admin console port
+    environment:
+      - KC_BOOTSTRAP_ADMIN_USERNAME=admin          # Set admin username and password
+      - KC_BOOTSTRAP_ADMIN_PASSWORD=admin
+    command:
+      - start-dev
+    restart: always
+    networks:
+      - infrastructure
+networks:
+  infrastructure:
+    external: true
