@@ -3,7 +3,7 @@ services:
     image: bitnami/kafka
     container_name: kafka
     ports:
-      - 9092:9092
+      - "9092:9092"
     networks:
       - internal-network
       - infrastructure
@@ -20,6 +20,23 @@ services:
       - KAFKA_CFG_NODE_ID=1
       - KAFKA_KRAFT_CLUSTER_ID=MkU3OEVBNTcwNTJENDM2Qk
     restart: always
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui
+    container_name: kafka-ui
+    depends_on:
+      - kafka-kraft
+    ports:
+      - "9000:9000"
+    environment:
+      - SERVER_PORT=9000
+      - KAFKA_CLUSTERS_0_NAME=local
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
+    networks:
+      - internal-network
+      - infrastructure
+    restart: always
+
 networks:
   internal-network:
     driver: bridge
