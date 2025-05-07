@@ -1,24 +1,25 @@
 services:
   neo4j:
-    image: neo4j:5.19.0-enterprise  # Specific version of Neo4j Enterprise Edition
+    image: neo4j:5.19.0-enterprise
     container_name: neo4j
     ports:
-      - "7475:7474"       # HTTP (Neo4j Browser)
-      - "7688:7687"       # Bolt protocol
+      - "7475:7474"  # HTTP port for the browser
+      - "7688:7687"  # Bolt protocol port
     volumes:
-      - neo4j_data:/data           # Persist data files
-      - neo4j_logs:/logs           # Persist log files
-      - neo4j_import:/import       # Import data
-      - neo4j_conf:/var/lib/neo4j/conf  # Optional: Custom configuration
+      - neo4j_data:/data
+      - neo4j_logs:/logs
+      - neo4j_import:/import
+      - neo4j_conf:/var/lib/neo4j/conf
     environment:
-      - NEO4J_AUTH=neo4j/password          # Set admin username and password
-      - NEO4J_ACCEPT_LICENSE_AGREEMENT=yes  # Accept Enterprise license
-      - NEO4J_dbms_memory_pagecache_size=2G # Configure memory for caching
-      - NEO4J_dbms_memory_heap_initial__size=2G
-      - NEO4J_dbms_memory_heap_max__size=4G
-      - NEO4JLABS_PLUGINS=["graph-data-science", "apoc"]  # Include popular plugins
+      - NEO4J_AUTH=neo4j/password
+      - NEO4J_ACCEPT_LICENSE_AGREEMENT=yes
+      - server.memory.pagecache.size=2G
+      - server.memory.heap.initial_size=2G
+      - server.memory.heap.max_size=4G
+      - dbms.security.procedures.unrestricted=gds.*,apoc.*
     restart: always
     networks:
+      - infrastructure
       - sapphire-net
 
 volumes:
@@ -26,6 +27,9 @@ volumes:
   neo4j_logs:
   neo4j_import:
   neo4j_conf:
+
 networks:
   sapphire-net:
+    external: true  # Specify that this is an external network
+  infrastructure:
     external: true
