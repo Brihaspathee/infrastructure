@@ -9,7 +9,7 @@ services:
       - KC_BOOTSTRAP_ADMIN_PASSWORD=admin
     command:
       - start-dev
-    restart: always
+#    restart: always
     networks:
       - infrastructure
 networks:

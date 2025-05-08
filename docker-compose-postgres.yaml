@@ -1,18 +1,26 @@
 services:
   postgres:
-    container_name: postgres
     image: postgres
+    container_name: postgres
     restart: always
     environment:
       POSTGRES_USER: postgres # this is the admin user
       POSTGRES_PASSWORD: cognizant # this is the admin password
-#      PGDATA: /var/lib/postgresql/data
-#    volumes:
-#      - postgres:/data/postgres
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - postgres:/data/postgres
     ports:
       - 5432:5432
     networks:
       - infrastructure
+      - sapphire-net
+      - artemis-net
 networks:
   infrastructure:
     external: true
+  sapphire-net:
+    external: true
+  artemis-net:
+    external: true
+volumes:
+  postgres:
